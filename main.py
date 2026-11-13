@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""make.fun entry ai-joke-03: one deterministic one-liner about AI coding agents.
+"""make.fun ai-joke-03 entry.
 
-Stdlib only, no network, no clock, no randomness. Same bytes every run.
+Writes one deterministic one-liner to $MAKEFUN_OUTPUT_DIR/entry.txt
+(default /output/entry.txt). Standard library only, no network, no clock,
+no randomness: every run produces the same bytes.
 """
 import os
 from pathlib import Path
@@ -15,20 +17,19 @@ DEFAULT_OUTPUT_DIR = "/output"
 OUTPUT_NAME = "entry.txt"
 
 
-def write_entry(out_dir: Path) -> Path:
-    """Write JOKE as a single line into out_dir/entry.txt and return the path."""
+def write_entry(out_dir):
+    """Create out_dir, write JOKE into entry.txt there, and return the path."""
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
-    target = out_dir / OUTPUT_NAME
-    with open(target, "w", encoding="utf-8", newline="\n") as fh:
-        fh.write(JOKE + "\n")
-    return target
+    path = out_dir / OUTPUT_NAME
+    with open(path, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(JOKE + "\n")
+    return path
 
 
-def main() -> None:
-    out_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR") or DEFAULT_OUTPUT_DIR)
-    path = write_entry(out_dir)
-    print(path)
+def main():
+    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or DEFAULT_OUTPUT_DIR
+    print(write_entry(out_dir))
 
 
 if __name__ == "__main__":
